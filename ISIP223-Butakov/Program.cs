@@ -127,17 +127,115 @@ class Program
         }
         Console.WriteLine("Отсортировано по цене!");
     }
-
     static void ConvertCurrency(double[] prices)
     {
-        Console.Write("Введите курс (1 рубль = X валюты): ");
-        double rate = double.Parse(Console.ReadLine());
+        Console.WriteLine("\n=== КОНВЕРТАЦИЯ ВАЛЮТЫ ===");
+        Console.WriteLine("Выберите валюту для конвертации:");
+        Console.WriteLine("1 - Доллары (USD)");
+        Console.WriteLine("2 - Евро (EUR)");
+        Console.WriteLine("3 - Рубли (RUB) - исходная валюта");
 
-        Console.WriteLine("\n=== КОНВЕРТАЦИЯ ===");
+        string currencyChoice;
+        string targetCurrency = "";
+        double rate = 1.0;
+        bool validChoice = false;
+
+        while (!validChoice)
+        {
+            Console.Write("Ваш выбор (1-3): ");
+            currencyChoice = Console.ReadLine();
+
+            switch (currencyChoice)
+            {
+                case "1":
+                    Console.Write("Введите курс USD (1 USD = X RUB): ");
+                    if (double.TryParse(Console.ReadLine(), out rate) && rate > 0)
+                    {
+                        targetCurrency = "USD";
+                        validChoice = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка! Введите корректный курс.");
+                    }
+                    break;
+
+                case "2":
+                    Console.Write("Введите курс EUR (1 EUR = X RUB): ");
+                    if (double.TryParse(Console.ReadLine(), out rate) && rate > 0)
+                    {
+                        targetCurrency = "EUR";
+                        validChoice = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка! Введите корректный курс.");
+                    }
+                    break;
+
+                case "3":
+                    targetCurrency = "RUB";
+                    rate = 1.0;
+                    validChoice = true;
+                    break;
+
+                default:
+                    Console.WriteLine("Неверный выбор! Введите 1, 2 или 3.");
+                    break;
+            }
+        }
+
+        Console.WriteLine($"\n=== РЕЗУЛЬТАТЫ КОНВЕРТАЦИИ В {targetCurrency} ===");
+
+        for (int i = 0; i < prices.Length; i++)
+        {
+            double convertedAmount;
+            string symbol = "";
+
+            switch (targetCurrency)
+            {
+                case "USD":
+                    convertedAmount = prices[i] / rate;
+                    symbol = "$";
+                    break;
+                case "EUR":
+                    convertedAmount = prices[i] / rate;
+                    symbol = "€";
+                    break;
+                case "RUB":
+                default:
+                    convertedAmount = prices[i];
+                    symbol = "₽";
+                    break;
+            }
+
+            Console.WriteLine($"{prices[i],8:F2} руб. = {symbol}{convertedAmount,8:F2} {targetCurrency}");
+        }
+
+        double totalRub = 0;
+        double totalConverted = 0;
+
         foreach (double price in prices)
         {
-            double converted = price * rate;
-            Console.WriteLine($"{price} руб. = {converted:F2} у.е.");
+            totalRub += price;
+
+            if (targetCurrency == "USD")
+                totalConverted += price / rate;
+            else if (targetCurrency == "EUR")
+                totalConverted += price / rate;
+            else
+                totalConverted += price;
+        }
+
+        string totalSymbol = targetCurrency == "USD" ? "$" :
+                            targetCurrency == "EUR" ? "€" : "₽";
+
+        Console.WriteLine(new string('-', 40));
+        Console.WriteLine($"Общая сумма: {totalRub:F2} руб. = {totalSymbol}{totalConverted:F2} {targetCurrency}");
+
+        if (targetCurrency != "RUB")
+        {
+            Console.WriteLine($"Использованный курс: 1 {targetCurrency} = {rate:F2} RUB");
         }
     }
 
