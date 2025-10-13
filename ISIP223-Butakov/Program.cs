@@ -1,261 +1,558 @@
 ﻿using System;
+using System.Collections.Generic;
 
-class Program
+namespace TextRoguelike
 {
-    static void Main()
+    class Program
     {
-        Console.Write("Сколько операций записать? (2-40): ");
-        int count = int.Parse(Console.ReadLine());
-
-        if (count < 2 || count > 40)
+        static void Main(string[] args)
         {
-            Console.WriteLine("Ошибка! Должно быть от 2 до 40 операций");
-            return;
-        }
-
-        string[] names = new string[count];
-        double[] prices = new double[count];
-
-        Console.WriteLine("\nВводите траты в формате: Название; Сумма");
-        for (int i = 0; i < count; i++)
-        {
-            Console.Write($"Трата {i + 1}: ");
-            string input = Console.ReadLine();
-
-            string[] parts = input.Split(';');
-
-            if (parts.Length == 2)
-            {
-                names[i] = parts[0].Trim();
-                prices[i] = double.Parse(parts[1].Trim());
-            }
-            else
-            {
-                Console.WriteLine("Ошибка формата! Используйте: Название; Сумма");
-                i--;
-            }
-        }
-
-        while (true)
-        {
-            Console.WriteLine("\n=== МЕНЮ ===");
-            Console.WriteLine("1 - Показать все траты");
-            Console.WriteLine("2 - Статистика");
-            Console.WriteLine("3 - Сортировка по цене");
-            Console.WriteLine("4 - Конвертация валюты");
-            Console.WriteLine("5 - Поиск по названию");
-            Console.WriteLine("0 - Выход");
-
-            Console.Write("Выберите: ");
-            string choice = Console.ReadLine();
-
-            switch (choice)
-            {
-                case "1":
-                    ShowAll(names, prices);
-                    break;
-                case "2":
-                    ShowStats(prices);
-                    break;
-                case "3":
-                    SortPrices(names, prices);
-                    break;
-                case "4":
-                    ConvertCurrency(prices);
-                    break;
-                case "5":
-                    SearchName(names, prices);
-                    break;
-                case "0":
-                    Console.WriteLine("До свидания!");
-                    return;
-                default:
-                    Console.WriteLine("Неверный выбор!");
-                    break;
-            }
+            Game game = new Game();
+            game.Start();
         }
     }
 
-    static void ShowAll(string[] names, double[] prices)
+    public class Game
     {
-        Console.WriteLine("\n=== ВСЕ ТРАТЫ ===");
-        for (int i = 0; i < names.Length; i++)
-        {
-            Console.WriteLine($"{i + 1}. {names[i]} - {prices[i]} руб.");
-        }
-    }
+        private Player player;
+        private Random random;
+        private int turnCount;
 
-    static void ShowStats(double[] prices)
-    {
-        double sum = 0;
-        double max = prices[0];
-        double min = prices[0];
-
-        foreach (double price in prices)
+        public Game()
         {
-            sum += price;
-            if (price > max) max = price;
-            if (price < min) min = price;
+            random = new Random();
+            player = new Player();
+            turnCount = 0;
         }
 
-        double average = sum / prices.Length;
-
-        Console.WriteLine("\n=== СТАТИСТИКА ===");
-        Console.WriteLine($"Общая сумма: {sum} руб.");
-        Console.WriteLine($"Средняя трата: {average:F2} руб.");
-        Console.WriteLine($"Самая большая: {max} руб.");
-        Console.WriteLine($"Самая маленькая: {min} руб.");
-    }
-
-    static void SortPrices(string[] names, double[] prices)
-    {
-        for (int i = 0; i < prices.Length - 1; i++)
+        public void Start()
         {
-            for (int j = 0; j < prices.Length - 1; j++)
+            Console.WriteLine("=== ТЕКСТОВЫЙ РОГАЛИК ===");
+            Console.WriteLine("Добро пожаловать в игру!");
+            Console.WriteLine("Каждый ход вас ждет либо сундук, либо враг.");
+            Console.WriteLine("Каждые 10 ходов - босс!\n");
+
+            while (player.IsAlive)
             {
-                if (prices[j] > prices[j + 1])
+                turnCount++;
+                Console.WriteLine($"\n--- Ход {turnCount} ---");
+                Console.WriteLine($"Здоровье игрока: {player.HP}");
+
+                // Каждые 10 ходов - босс
+                if (turnCount % 10 == 0)
                 {
-                    double tempPrice = prices[j];
-                    prices[j] = prices[j + 1];
-                    prices[j + 1] = tempPrice;
+                    EncounterBoss();
+                }
+                else
+                {
+                    // 50/50 шанс на сундук или врага
+                    if (random.Next(2) == 0)
+                    {
+                        EncounterEnemy();
+                    }
+                    else
+                    {
+                        OpenChest();
+                    }
+                }
 
-                    string tempName = names[j];
-                    names[j] = names[j + 1];
-                    names[j + 1] = tempName;
+                if (player.IsAlive)
+                {
+                    Console.WriteLine("Нажмите любую клавишу для продолжения...");
+                    Console.ReadKey();
                 }
             }
-        }
-        Console.WriteLine("Отсортировано по цене!");
-    }
-    static void ConvertCurrency(double[] prices)
-    {
-        Console.WriteLine("\n=== КОНВЕРТАЦИЯ ВАЛЮТЫ ===");
-        Console.WriteLine("Выберите валюту для конвертации:");
-        Console.WriteLine("1 - Доллары (USD)");
-        Console.WriteLine("2 - Евро (EUR)");
-        Console.WriteLine("3 - Рубли (RUB) - исходная валюта");
 
-        string currencyChoice;
-        string targetCurrency = "";
-        double rate = 1.0;
-        bool validChoice = false;
-
-        while (!validChoice)
-        {
-            Console.Write("Ваш выбор (1-3): ");
-            currencyChoice = Console.ReadLine();
-
-            switch (currencyChoice)
-            {
-                case "1":
-                    Console.Write("Введите курс USD (1 USD = X RUB): ");
-                    if (double.TryParse(Console.ReadLine(), out rate) && rate > 0)
-                    {
-                        targetCurrency = "USD";
-                        validChoice = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Ошибка! Введите корректный курс.");
-                    }
-                    break;
-
-                case "2":
-                    Console.Write("Введите курс EUR (1 EUR = X RUB): ");
-                    if (double.TryParse(Console.ReadLine(), out rate) && rate > 0)
-                    {
-                        targetCurrency = "EUR";
-                        validChoice = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Ошибка! Введите корректный курс.");
-                    }
-                    break;
-
-                case "3":
-                    targetCurrency = "RUB";
-                    rate = 1.0;
-                    validChoice = true;
-                    break;
-
-                default:
-                    Console.WriteLine("Неверный выбор! Введите 1, 2 или 3.");
-                    break;
-            }
+            Console.WriteLine("\n=== ИГРА ОКОНЧЕНА ===");
+            Console.WriteLine($"Вы продержались {turnCount} ходов!");
         }
 
-        Console.WriteLine($"\n=== РЕЗУЛЬТАТЫ КОНВЕРТАЦИИ В {targetCurrency} ===");
-
-        for (int i = 0; i < prices.Length; i++)
+        private void EncounterEnemy()
         {
-            double convertedAmount;
-            string symbol = "";
+            Enemy enemy;
+            int enemyType = random.Next(3);
 
-            switch (targetCurrency)
+            switch (enemyType)
             {
-                case "USD":
-                    convertedAmount = prices[i] / rate;
-                    symbol = "$";
+                case 0:
+                    enemy = new Goblin();
                     break;
-                case "EUR":
-                    convertedAmount = prices[i] / rate;
-                    symbol = "€";
+                case 1:
+                    enemy = new Skeleton();
                     break;
-                case "RUB":
+                case 2:
+                    enemy = new Mage();
+                    break;
                 default:
-                    convertedAmount = prices[i];
-                    symbol = "₽";
+                    enemy = new Goblin();
                     break;
             }
 
-            Console.WriteLine($"{prices[i],8:F2} руб. = {symbol}{convertedAmount,8:F2} {targetCurrency}");
+            Console.WriteLine($"Вы встретили {enemy.Name}!");
+            Console.WriteLine($"Здоровье врага: {enemy.HP}, Атака: {enemy.Attack}, Защита: {enemy.Defense}");
+
+            StartCombat(enemy);
         }
 
-        double totalRub = 0;
-        double totalConverted = 0;
-
-        foreach (double price in prices)
+        private void EncounterBoss()
         {
-            totalRub += price;
+            Boss boss;
+            int bossType = random.Next(4);
 
-            if (targetCurrency == "USD")
-                totalConverted += price / rate;
-            else if (targetCurrency == "EUR")
-                totalConverted += price / rate;
+            switch (bossType)
+            {
+                case 0:
+                    boss = new VVG();
+                    break;
+                case 1:
+                    boss = new Kovalsky();
+                    break;
+                case 2:
+                    boss = new ArchmageCPP();
+                    break;
+                case 3:
+                    boss = new PestovC();
+                    break;
+                default:
+                    boss = new VVG();
+                    break;
+            }
+
+            Console.WriteLine($"!!! ВНИМАНИЕ БОСС !!!");
+            Console.WriteLine($"Вы встретили {boss.Name}!");
+            Console.WriteLine($"Здоровье босса: {boss.HP}, Атака: {boss.Attack}, Защита: {boss.Defense}");
+
+            StartCombat(boss);
+        }
+
+        private void StartCombat(Enemy enemy)
+        {
+            bool playerFrozen = false;
+
+            while (enemy.IsAlive && player.IsAlive)
+            {
+                if (!playerFrozen)
+                {
+                    PlayerTurn(enemy);
+                }
+                else
+                {
+                    Console.WriteLine("Вы заморожены и пропускаете ход!");
+                    playerFrozen = false;
+                }
+
+                if (enemy.IsAlive)
+                {
+                    EnemyTurn(enemy, ref playerFrozen);
+                }
+            }
+
+            if (player.IsAlive)
+            {
+                Console.WriteLine($"Вы победили {enemy.Name}!");
+            }
+        }
+
+        private void PlayerTurn(Enemy enemy)
+        {
+            Console.WriteLine("\nВаш ход:");
+            Console.WriteLine("1 - Атаковать");
+            Console.WriteLine("2 - Защищаться");
+
+            int choice = GetChoice(1, 2);
+
+            if (choice == 1)
+            {
+                int damage = player.Attack;
+                Console.WriteLine($"Вы атакуете и наносите {damage} урона!");
+                enemy.TakeDamage(damage);
+            }
             else
-                totalConverted += price;
-        }
-
-        string totalSymbol = targetCurrency == "USD" ? "$" :
-                            targetCurrency == "EUR" ? "€" : "₽";
-
-        Console.WriteLine(new string('-', 40));
-        Console.WriteLine($"Общая сумма: {totalRub:F2} руб. = {totalSymbol}{totalConverted:F2} {targetCurrency}");
-
-        if (targetCurrency != "RUB")
-        {
-            Console.WriteLine($"Использованный курс: 1 {targetCurrency} = {rate:F2} RUB");
-        }
-    }
-
-    static void SearchName(string[] names, double[] prices)
-    {
-        Console.Write("Введите название для поиска: ");
-        string search = Console.ReadLine().ToLower();
-
-        Console.WriteLine("\n=== РЕЗУЛЬТАТЫ ===");
-        bool found = false;
-
-        for (int i = 0; i < names.Length; i++)
-        {
-            if (names[i].ToLower().Contains(search))
             {
-                Console.WriteLine($"{names[i]} - {prices[i]} руб.");
-                found = true;
+                player.IsDefending = true;
+                Console.WriteLine("Вы готовитесь к защите!");
             }
         }
 
-        if (!found) Console.WriteLine("Ничего не найдено!");
+        private void EnemyTurn(Enemy enemy, ref bool playerFrozen)
+        {
+            Console.WriteLine($"\nХод {enemy.Name}:");
+
+            if (player.IsDefending)
+            {
+                // Шанс уклонения 40%
+                if (random.Next(100) < 40)
+                {
+                    Console.WriteLine("Вы успешно уклонились от атаки!");
+                    player.IsDefending = false;
+                    return;
+                }
+                else
+                {
+                    // Блок: уменьшение урона на 70-100% от защиты
+                    double blockPercentage = 0.7 + (random.NextDouble() * 0.3);
+                    int blockedDamage = (int)(player.Defense * blockPercentage);
+                    Console.WriteLine($"Вы блокируете {blockedDamage} урона!");
+                    enemy.SpecialAttack(player, blockedDamage, ref playerFrozen);
+                    player.IsDefending = false;
+                }
+            }
+            else
+            {
+                enemy.SpecialAttack(player, 0, ref playerFrozen);
+            }
+        }
+
+        private void OpenChest()
+        {
+            Console.WriteLine("Вы нашли сундук!");
+            int itemType = random.Next(3);
+
+            switch (itemType)
+            {
+                case 0:
+                    Console.WriteLine("В сундуке лечебное зелье!");
+                    player.HP = 100;
+                    Console.WriteLine("Ваше здоровье полностью восстановлено!");
+                    break;
+                case 1:
+                    GetNewWeapon();
+                    break;
+                case 2:
+                    GetNewArmor();
+                    break;
+            }
+        }
+
+        private void GetNewWeapon()
+        {
+            int attack = random.Next(15, 31);
+            Weapon newWeapon = new Weapon(attack);
+
+            Console.WriteLine($"В сундуке новое оружие с атакой: {newWeapon.Attack}");
+            Console.WriteLine($"Ваше текущее оружие: {player.Weapon.Attack} атаки");
+
+            Console.WriteLine("1 - Взять новое оружие");
+            Console.WriteLine("2 - Выбросить");
+
+            int choice = GetChoice(1, 2);
+
+            if (choice == 1)
+            {
+                player.EquipWeapon(newWeapon);
+                Console.WriteLine("Вы экипировали новое оружие!");
+            }
+        }
+
+        private void GetNewArmor()
+        {
+            int defense = random.Next(8, 16);
+            Armor newArmor = new Armor(defense);
+
+            Console.WriteLine($"В сундуке новые доспехи с защитой: {newArmor.Defense}");
+            Console.WriteLine($"Ваши текущие доспехи: {player.Armor.Defense} защиты");
+
+            Console.WriteLine("1 - Взять новые доспехи");
+            Console.WriteLine("2 - Выбросить");
+
+            int choice = GetChoice(1, 2);
+
+            if (choice == 1)
+            {
+                player.EquipArmor(newArmor);
+                Console.WriteLine("Вы экипировали новые доспехи!");
+            }
+        }
+
+        private int GetChoice(int min, int max)
+        {
+            int choice;
+            while (!int.TryParse(Console.ReadLine(), out choice) || choice < min || choice > max)
+            {
+                Console.WriteLine($"Пожалуйста, введите число от {min} до {max}");
+            }
+            return choice;
+        }
+    }
+
+    public class Player
+    {
+        public int HP { get; set; }
+        public Weapon Weapon { get; private set; }
+        public Armor Armor { get; private set; }
+        public int Attack => Weapon.Attack;
+        public int Defense => Armor.Defense;
+        public bool IsDefending { get; set; }
+        public bool IsAlive => HP > 0;
+
+        public Player()
+        {
+            HP = 100;
+            Weapon = new Weapon(10);
+            Armor = new Armor(5);
+            IsDefending = false;
+        }
+
+        public void EquipWeapon(Weapon weapon)
+        {
+            Weapon = weapon;
+        }
+
+        public void EquipArmor(Armor armor)
+        {
+            Armor = armor;
+        }
+
+        public void TakeDamage(int damage)
+        {
+            HP -= damage;
+            if (HP < 0) HP = 0;
+        }
+    }
+
+    public abstract class Enemy
+    {
+        public string Name { get; protected set; }
+        public int HP { get; protected set; }
+        public int Attack { get; protected set; }
+        public int Defense { get; protected set; }
+        public bool IsAlive => HP > 0;
+
+        public void TakeDamage(int damage)
+        {
+            HP -= damage;
+            if (HP < 0) HP = 0;
+        }
+
+        public abstract void SpecialAttack(Player player, int blockedDamage, ref bool playerFrozen);
+    }
+
+    public class Goblin : Enemy
+    {
+        private Random random;
+
+        public Goblin()
+        {
+            Name = "Гоблин";
+            HP = 30;
+            Attack = 12;
+            Defense = 3;
+            random = new Random();
+        }
+
+        public override void SpecialAttack(Player player, int blockedDamage, ref bool playerFrozen)
+        {
+            // 20% шанс критического удара
+            if (random.Next(100) < 20)
+            {
+                int critDamage = Attack * 2 - blockedDamage;
+                if (critDamage < 0) critDamage = 0;
+                Console.WriteLine($"Критический удар! Нанесено {critDamage} урона!");
+                player.TakeDamage(critDamage);
+            }
+            else
+            {
+                int damage = Attack - blockedDamage;
+                if (damage < 0) damage = 0;
+                Console.WriteLine($"Гоблин атакует! Нанесено {damage} урона!");
+                player.TakeDamage(damage);
+            }
+        }
+    }
+
+    public class Skeleton : Enemy
+    {
+        public Skeleton()
+        {
+            Name = "Скелет";
+            HP = 25;
+            Attack = 15;
+            Defense = 2;
+        }
+
+        public override void SpecialAttack(Player player, int blockedDamage, ref bool playerFrozen)
+        {
+            // Игнорирует защиту игрока
+            Console.WriteLine($"Скелет атакует, игнорируя защиту! Нанесено {Attack} урона!");
+            player.TakeDamage(Attack);
+        }
+    }
+
+    public class Mage : Enemy
+    {
+        private Random random;
+
+        public Mage()
+        {
+            Name = "Маг";
+            HP = 20;
+            Attack = 18;
+            Defense = 1;
+            random = new Random();
+        }
+
+        public override void SpecialAttack(Player player, int blockedDamage, ref bool playerFrozen)
+        {
+            int damage = Attack - blockedDamage;
+            if (damage < 0) damage = 0;
+
+            // 25% шанс заморозки
+            if (random.Next(100) < 25)
+            {
+                Console.WriteLine($"Маг замораживает вас! Нанесено {damage} урона, вы пропустите следующий ход!");
+                playerFrozen = true;
+                player.TakeDamage(damage);
+            }
+            else
+            {
+                Console.WriteLine($"Маг атакует! Нанесено {damage} урона!");
+                player.TakeDamage(damage);
+            }
+        }
+    }
+
+    public abstract class Boss : Enemy
+    {
+        // Базовые характеристики для расчета множителей
+        protected const int BASE_HP = 30;
+        protected const int BASE_ATTACK = 12;
+        protected const int BASE_DEFENSE = 3;
+    }
+
+    public class VVG : Boss
+    {
+        private Random random;
+
+        public VVG()
+        {
+            Name = "ВВГ (Гоблин-босс)";
+            HP = (int)(BASE_HP * 2.0);
+            Attack = (int)(BASE_ATTACK * 1.5);
+            Defense = (int)(BASE_DEFENSE * 1.2);
+            random = new Random();
+        }
+
+        public override void SpecialAttack(Player player, int blockedDamage, ref bool playerFrozen)
+        {
+            // 30% шанс критического удара (20% базовый + 10%)
+            if (random.Next(100) < 30)
+            {
+                int critDamage = Attack * 2 - blockedDamage;
+                if (critDamage < 0) critDamage = 0;
+                Console.WriteLine($"Мощный критический удар! Нанесено {critDamage} урона!");
+                player.TakeDamage(critDamage);
+            }
+            else
+            {
+                int damage = Attack - blockedDamage;
+                if (damage < 0) damage = 0;
+                Console.WriteLine($"ВВГ атакует! Нанесено {damage} урона!");
+                player.TakeDamage(damage);
+            }
+        }
+    }
+
+    public class Kovalsky : Boss
+    {
+        public Kovalsky()
+        {
+            Name = "Ковальский (Скелет-босс)";
+            HP = (int)(BASE_HP * 2.5);
+            Attack = (int)(BASE_ATTACK * 1.3);
+            Defense = (int)(BASE_DEFENSE * 1.4);
+        }
+
+        public override void SpecialAttack(Player player, int blockedDamage, ref bool playerFrozen)
+        {
+            // Игнорирует защиту игрока
+            Console.WriteLine($"Ковальский атакует, полностью игнорируя защиту! Нанесено {Attack} урона!");
+            player.TakeDamage(Attack);
+        }
+    }
+
+    public class ArchmageCPP : Boss
+    {
+        private Random random;
+
+        public ArchmageCPP()
+        {
+            Name = "Архимаг C++";
+            HP = (int)(BASE_HP * 1.8);
+            Attack = (int)(BASE_ATTACK * 1.6);
+            Defense = (int)(BASE_DEFENSE * 1.1);
+            random = new Random();
+        }
+
+        public override void SpecialAttack(Player player, int blockedDamage, ref bool playerFrozen)
+        {
+            int damage = Attack - blockedDamage;
+            if (damage < 0) damage = 0;
+
+            // 35% шанс заморозки (25% базовый + 10%)
+            if (random.Next(100) < 35)
+            {
+                Console.WriteLine($"Мощная заморозка! Нанесено {damage} урона, вы пропустите следующий ход!");
+                playerFrozen = true;
+                player.TakeDamage(damage);
+            }
+            else
+            {
+                Console.WriteLine($"Архимаг C++ атакует! Нанесено {damage} урона!");
+                player.TakeDamage(damage);
+            }
+        }
+    }
+
+    public class PestovC : Boss
+    {
+        private Random random;
+
+        public PestovC()
+        {
+            Name = "Пестов С--";
+            HP = (int)(BASE_HP * 1.3);
+            Attack = (int)(BASE_ATTACK * 1.8);
+            Defense = (int)(BASE_DEFENSE * 0.6);
+            random = new Random();
+        }
+
+        public override void SpecialAttack(Player player, int blockedDamage, ref bool playerFrozen)
+        {
+            // Игнорирует защиту игрока + шанс заморозки
+            int damage = Attack;
+
+            // 40% шанс заморозки (25% базовый + 15%)
+            if (random.Next(100) < 40)
+            {
+                Console.WriteLine($"Пестов С-- атакует с заморозкой, игнорируя защиту! Нанесено {damage} урона, вы пропустите следующий ход!");
+                playerFrozen = true;
+                player.TakeDamage(damage);
+            }
+            else
+            {
+                Console.WriteLine($"Пестов С-- атакует, игнорируя защиту! Нанесено {damage} урона!");
+                player.TakeDamage(damage);
+            }
+        }
+    }
+
+    public class Weapon
+    {
+        public int Attack { get; }
+
+        public Weapon(int attack)
+        {
+            Attack = attack;
+        }
+    }
+
+    public class Armor
+    {
+        public int Defense { get; }
+
+        public Armor(int defense)
+        {
+            Defense = defense;
+        }
     }
 }
