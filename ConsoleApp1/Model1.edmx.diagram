@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3d6d93a948c74f908ceefd4f9803a817" Name="Diagram1">
+        <EntityTypeShape EntityType="AutoServiceAModel.AutoService" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoServiceAModel.Clients" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoServiceAModel.OperationHistory" Width="1.5" PointX="5.25" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoServiceAModel.Parts" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoServiceAModel.ServiceOrders" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoServiceAModel.SupplyOrders" Width="1.5" PointX="3" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoServiceAModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoServiceAModel.Warehouse" Width="1.5" PointX="3" PointY="12.375" IsExpanded="true" />
+        <AssociationConnector Association="AutoServiceAModel.FK__Operation__AutoS__6FE99F9F" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoServiceAModel.FK__ServiceOr__Clien__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoServiceAModel.FK__Operation__Order__70DDC3D8" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoServiceAModel.FK__Operation__Suppl__71D1E811" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoServiceAModel.FK__ServiceOr__Requi__60A75C0F" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoServiceAModel.FK__ServiceOr__UsedP__619B8048" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoServiceAModel.FK__SupplyOrd__PartI__6754599E" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoServiceAModel.FK__Warehouse__PartI__5070F446" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
