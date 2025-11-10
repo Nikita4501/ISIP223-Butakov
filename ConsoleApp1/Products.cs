@@ -12,27 +12,27 @@ namespace ConsoleApp1
     using System;
     using System.Collections.Generic;
     
-    public partial class ServiceOrders
+    public partial class Products
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ServiceOrders()
+        public Products()
         {
-            this.OperationHistory = new HashSet<OperationHistory>();
+            this.CartItems = new HashSet<CartItems>();
+            this.OrderItems = new HashSet<OrderItems>();
         }
     
-        public int OrderID { get; set; }
-        public int ClientID { get; set; }
-        public int RequiredPartID { get; set; }
-        public Nullable<int> UsedPartID { get; set; }
-        public decimal RepairCost { get; set; }
-        public Nullable<System.DateTime> OrderDate { get; set; }
-        public string Status { get; set; }
-        public string Notes { get; set; }
+        public int ProductId { get; set; }
+        public int CategoryId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal Price { get; set; }
+        public int Stock { get; set; }
+        public System.DateTime CreatedAt { get; set; }
     
-        public virtual Clients Clients { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OperationHistory> OperationHistory { get; set; }
-        public virtual Parts Parts { get; set; }
-        public virtual Parts Parts1 { get; set; }
+        public virtual ICollection<CartItems> CartItems { get; set; }
+        public virtual Categories Categories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderItems> OrderItems { get; set; }
     }
 }

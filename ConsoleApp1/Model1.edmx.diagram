@@ -4,23 +4,22 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3d6d93a948c74f908ceefd4f9803a817" Name="Diagram1">
-        <EntityTypeShape EntityType="AutoServiceAModel.AutoService" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AutoServiceAModel.Clients" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="AutoServiceAModel.OperationHistory" Width="1.5" PointX="5.25" PointY="6.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="AutoServiceAModel.Parts" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="AutoServiceAModel.ServiceOrders" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="AutoServiceAModel.SupplyOrders" Width="1.5" PointX="3" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AutoServiceAModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="2" IsExpanded="true" />
-        <EntityTypeShape EntityType="AutoServiceAModel.Warehouse" Width="1.5" PointX="3" PointY="12.375" IsExpanded="true" />
-        <AssociationConnector Association="AutoServiceAModel.FK__Operation__AutoS__6FE99F9F" ManuallyRouted="false" />
-        <AssociationConnector Association="AutoServiceAModel.FK__ServiceOr__Clien__5FB337D6" ManuallyRouted="false" />
-        <AssociationConnector Association="AutoServiceAModel.FK__Operation__Order__70DDC3D8" ManuallyRouted="false" />
-        <AssociationConnector Association="AutoServiceAModel.FK__Operation__Suppl__71D1E811" ManuallyRouted="false" />
-        <AssociationConnector Association="AutoServiceAModel.FK__ServiceOr__Requi__60A75C0F" ManuallyRouted="false" />
-        <AssociationConnector Association="AutoServiceAModel.FK__ServiceOr__UsedP__619B8048" ManuallyRouted="false" />
-        <AssociationConnector Association="AutoServiceAModel.FK__SupplyOrd__PartI__6754599E" ManuallyRouted="false" />
-        <AssociationConnector Association="AutoServiceAModel.FK__Warehouse__PartI__5070F446" ManuallyRouted="false" />
+      <Diagram DiagramId="587cd57f71af401f8041f9223e97ef81" Name="Diagram1">
+        <EntityTypeShape EntityType="GMWOGModel.CartItems" Width="1.5" PointX="5.25" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GMWOGModel.Categories" Width="1.5" PointX="0.75" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="GMWOGModel.OrderItems" Width="1.5" PointX="8.25" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GMWOGModel.Orders" Width="1.5" PointX="6" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GMWOGModel.PickupPoints" Width="1.5" PointX="3.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GMWOGModel.Products" Width="1.5" PointX="3" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GMWOGModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GMWOGModel.Users" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
+        <AssociationConnector Association="GMWOGModel.FK__CartItems__Produ__17F790F9" ManuallyRouted="false" />
+        <AssociationConnector Association="GMWOGModel.FK__CartItems__UserI__17036CC0" ManuallyRouted="false" />
+        <AssociationConnector Association="GMWOGModel.FK__Products__Catego__10566F31" ManuallyRouted="false" />
+        <AssociationConnector Association="GMWOGModel.FK__OrderItem__Order__236943A5" ManuallyRouted="false" />
+        <AssociationConnector Association="GMWOGModel.FK__OrderItem__Produ__245D67DE" ManuallyRouted="false" />
+        <AssociationConnector Association="GMWOGModel.FK__Orders__PickupPo__1DB06A4F" ManuallyRouted="false" />
+        <AssociationConnector Association="GMWOGModel.FK__Orders__UserId__1CBC4616" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -12,21 +12,26 @@ namespace ConsoleApp1
     using System;
     using System.Collections.Generic;
     
-    public partial class Clients
+    public partial class Users
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Clients()
+        public Users()
         {
-            this.ServiceOrders = new HashSet<ServiceOrders>();
+            this.CartItems = new HashSet<CartItems>();
+            this.Orders = new HashSet<Orders>();
         }
     
-        public int ClientID { get; set; }
-        public string Name { get; set; }
-        public string CarModel { get; set; }
-        public Nullable<System.DateTime> VisitDate { get; set; }
-        public string Status { get; set; }
+        public int UserId { get; set; }
+        public string Username { get; set; }
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public System.DateTime CreatedAt { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ServiceOrders> ServiceOrders { get; set; }
+        public virtual ICollection<CartItems> CartItems { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Orders> Orders { get; set; }
     }
 }

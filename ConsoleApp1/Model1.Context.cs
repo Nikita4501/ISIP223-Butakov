@@ -13,10 +13,10 @@ namespace ConsoleApp1
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class AutoServiceAEntities : DbContext
+    public partial class GMWOGEntities : DbContext
     {
-        public AutoServiceAEntities()
-            : base("name=AutoServiceAEntities")
+        public GMWOGEntities()
+            : base("name=GMWOGEntities")
         {
         }
     
@@ -25,13 +25,13 @@ namespace ConsoleApp1
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<AutoService> AutoService { get; set; }
-        public virtual DbSet<Clients> Clients { get; set; }
-        public virtual DbSet<OperationHistory> OperationHistory { get; set; }
-        public virtual DbSet<Parts> Parts { get; set; }
-        public virtual DbSet<ServiceOrders> ServiceOrders { get; set; }
-        public virtual DbSet<SupplyOrders> SupplyOrders { get; set; }
+        public virtual DbSet<CartItems> CartItems { get; set; }
+        public virtual DbSet<Categories> Categories { get; set; }
+        public virtual DbSet<OrderItems> OrderItems { get; set; }
+        public virtual DbSet<Orders> Orders { get; set; }
+        public virtual DbSet<PickupPoints> PickupPoints { get; set; }
+        public virtual DbSet<Products> Products { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
-        public virtual DbSet<Warehouse> Warehouse { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
     }
 }

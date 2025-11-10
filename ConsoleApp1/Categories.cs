@@ -12,19 +12,19 @@ namespace ConsoleApp1
     using System;
     using System.Collections.Generic;
     
-    public partial class OperationHistory
+    public partial class Categories
     {
-        public int HistoryID { get; set; }
-        public int AutoServiceID { get; set; }
-        public Nullable<int> OrderID { get; set; }
-        public Nullable<int> SupplyOrderID { get; set; }
-        public string OperationType { get; set; }
-        public string Details { get; set; }
-        public Nullable<System.DateTime> OperationDate { get; set; }
-        public decimal BalanceChange { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Categories()
+        {
+            this.Products = new HashSet<Products>();
+        }
     
-        public virtual AutoService AutoService { get; set; }
-        public virtual ServiceOrders ServiceOrders { get; set; }
-        public virtual SupplyOrders SupplyOrders { get; set; }
+        public int CategoryId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Products> Products { get; set; }
     }
 }

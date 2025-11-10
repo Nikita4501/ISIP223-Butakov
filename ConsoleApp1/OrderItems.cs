@@ -12,20 +12,15 @@ namespace ConsoleApp1
     using System;
     using System.Collections.Generic;
     
-    public partial class AutoService
+    public partial class OrderItems
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public AutoService()
-        {
-            this.OperationHistory = new HashSet<OperationHistory>();
-        }
+        public int OrderItemId { get; set; }
+        public int OrderId { get; set; }
+        public int ProductId { get; set; }
+        public decimal UnitPrice { get; set; }
+        public int Quantity { get; set; }
     
-        public int AutoServiceID { get; set; }
-        public decimal Balance { get; set; }
-        public int ClientCounter { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OperationHistory> OperationHistory { get; set; }
+        public virtual Orders Orders { get; set; }
+        public virtual Products Products { get; set; }
     }
 }

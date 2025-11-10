@@ -4,73 +4,67 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище AutoServiceAModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="AutoService">
+      <Schema Namespace="Хранилище GMWOGModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CartItems">
           <Key>
-            <PropertyRef Name="AutoServiceID" />
+            <PropertyRef Name="CartItemId" />
           </Key>
-          <Property Name="AutoServiceID" Type="int" Nullable="false" />
-          <Property Name="Balance" Type="decimal" Precision="15" Scale="2" Nullable="false" />
-          <Property Name="ClientCounter" Type="int" Nullable="false" />
-          <Property Name="CreatedDate" Type="datetime2" Precision="7" />
-        </EntityType>
-        <EntityType Name="Clients">
-          <Key>
-            <PropertyRef Name="ClientID" />
-          </Key>
-          <Property Name="ClientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="CarModel" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="VisitDate" Type="datetime2" Precision="7" />
-          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="OperationHistory">
-          <Key>
-            <PropertyRef Name="HistoryID" />
-          </Key>
-          <Property Name="HistoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AutoServiceID" Type="int" Nullable="false" />
-          <Property Name="OrderID" Type="int" />
-          <Property Name="SupplyOrderID" Type="int" />
-          <Property Name="OperationType" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Details" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="OperationDate" Type="datetime2" Precision="7" />
-          <Property Name="BalanceChange" Type="decimal" Precision="10" Scale="2" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Parts">
-          <Key>
-            <PropertyRef Name="PartID" />
-          </Key>
-          <Property Name="PartID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="BasePrice" Type="decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="CreatedDate" Type="datetime2" Precision="7" />
-        </EntityType>
-        <EntityType Name="ServiceOrders">
-          <Key>
-            <PropertyRef Name="OrderID" />
-          </Key>
-          <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ClientID" Type="int" Nullable="false" />
-          <Property Name="RequiredPartID" Type="int" Nullable="false" />
-          <Property Name="UsedPartID" Type="int" />
-          <Property Name="RepairCost" Type="decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="OrderDate" Type="datetime2" Precision="7" />
-          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Notes" Type="nvarchar" MaxLength="500" />
-        </EntityType>
-        <EntityType Name="SupplyOrders">
-          <Key>
-            <PropertyRef Name="SupplyOrderID" />
-          </Key>
-          <Property Name="SupplyOrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="PartID" Type="int" Nullable="false" />
+          <Property Name="CartItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
-          <Property Name="UnitCost" Type="decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="TotalCost" Type="decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="OrderDate" Type="datetime2" Precision="7" />
-          <Property Name="DeliveryProgress" Type="int" Nullable="false" />
+          <Property Name="AddedAt" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="OrderItems">
+          <Key>
+            <PropertyRef Name="OrderItemId" />
+          </Key>
+          <Property Name="OrderItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="UnitPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="PickupPointId" Type="int" Nullable="false" />
+          <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PickupPoints">
+          <Key>
+            <PropertyRef Name="PickupPointId" />
+          </Key>
+          <Property Name="PickupPointId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Stock" Type="int" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -82,239 +76,223 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <EntityType Name="Warehouse">
+        <EntityType Name="Users">
           <Key>
-            <PropertyRef Name="WarehouseID" />
+            <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="WarehouseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="PartID" Type="int" Nullable="false" />
-          <Property Name="Quantity" Type="int" Nullable="false" />
-          <Property Name="LastRestockDate" Type="datetime2" Precision="7" />
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PasswordHash" Type="varbinary" MaxLength="256" Nullable="false" />
+          <Property Name="PasswordSalt" Type="varbinary" MaxLength="128" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="200" />
+          <Property Name="Email" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Operation__AutoS__6FE99F9F">
-          <End Role="AutoService" Type="Self.AutoService" Multiplicity="1" />
-          <End Role="OperationHistory" Type="Self.OperationHistory" Multiplicity="*" />
+        <Association Name="FK__CartItems__Produ__17F790F9">
+          <End Role="Products" Type="Self.Products" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CartItems" Type="Self.CartItems" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AutoService">
-              <PropertyRef Name="AutoServiceID" />
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
             </Principal>
-            <Dependent Role="OperationHistory">
-              <PropertyRef Name="AutoServiceID" />
+            <Dependent Role="CartItems">
+              <PropertyRef Name="ProductId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Operation__Order__70DDC3D8">
-          <End Role="ServiceOrders" Type="Self.ServiceOrders" Multiplicity="0..1" />
-          <End Role="OperationHistory" Type="Self.OperationHistory" Multiplicity="*" />
+        <Association Name="FK__CartItems__UserI__17036CC0">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CartItems" Type="Self.CartItems" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ServiceOrders">
-              <PropertyRef Name="OrderID" />
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
             </Principal>
-            <Dependent Role="OperationHistory">
-              <PropertyRef Name="OrderID" />
+            <Dependent Role="CartItems">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Operation__Suppl__71D1E811">
-          <End Role="SupplyOrders" Type="Self.SupplyOrders" Multiplicity="0..1" />
-          <End Role="OperationHistory" Type="Self.OperationHistory" Multiplicity="*" />
+        <Association Name="FK__OrderItem__Order__236943A5">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="SupplyOrders">
-              <PropertyRef Name="SupplyOrderID" />
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderId" />
             </Principal>
-            <Dependent Role="OperationHistory">
-              <PropertyRef Name="SupplyOrderID" />
+            <Dependent Role="OrderItems">
+              <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ServiceOr__Clien__5FB337D6">
-          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
-          <End Role="ServiceOrders" Type="Self.ServiceOrders" Multiplicity="*" />
+        <Association Name="FK__OrderItem__Produ__245D67DE">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Clients">
-              <PropertyRef Name="ClientID" />
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
             </Principal>
-            <Dependent Role="ServiceOrders">
-              <PropertyRef Name="ClientID" />
+            <Dependent Role="OrderItems">
+              <PropertyRef Name="ProductId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ServiceOr__Requi__60A75C0F">
-          <End Role="Parts" Type="Self.Parts" Multiplicity="1" />
-          <End Role="ServiceOrders" Type="Self.ServiceOrders" Multiplicity="*" />
+        <Association Name="FK__Orders__PickupPo__1DB06A4F">
+          <End Role="PickupPoints" Type="Self.PickupPoints" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Parts">
-              <PropertyRef Name="PartID" />
+            <Principal Role="PickupPoints">
+              <PropertyRef Name="PickupPointId" />
             </Principal>
-            <Dependent Role="ServiceOrders">
-              <PropertyRef Name="RequiredPartID" />
+            <Dependent Role="Orders">
+              <PropertyRef Name="PickupPointId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ServiceOr__UsedP__619B8048">
-          <End Role="Parts" Type="Self.Parts" Multiplicity="0..1" />
-          <End Role="ServiceOrders" Type="Self.ServiceOrders" Multiplicity="*" />
+        <Association Name="FK__Orders__UserId__1CBC4616">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Parts">
-              <PropertyRef Name="PartID" />
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
             </Principal>
-            <Dependent Role="ServiceOrders">
-              <PropertyRef Name="UsedPartID" />
+            <Dependent Role="Orders">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SupplyOrd__PartI__6754599E">
-          <End Role="Parts" Type="Self.Parts" Multiplicity="1" />
-          <End Role="SupplyOrders" Type="Self.SupplyOrders" Multiplicity="*" />
+        <Association Name="FK__Products__Catego__10566F31">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Parts">
-              <PropertyRef Name="PartID" />
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryId" />
             </Principal>
-            <Dependent Role="SupplyOrders">
-              <PropertyRef Name="PartID" />
+            <Dependent Role="Products">
+              <PropertyRef Name="CategoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Warehouse__PartI__5070F446">
-          <End Role="Parts" Type="Self.Parts" Multiplicity="1" />
-          <End Role="Warehouse" Type="Self.Warehouse" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Parts">
-              <PropertyRef Name="PartID" />
-            </Principal>
-            <Dependent Role="Warehouse">
-              <PropertyRef Name="PartID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="Хранилище AutoServiceAModelContainer">
-          <EntitySet Name="AutoService" EntityType="Self.AutoService" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="OperationHistory" EntityType="Self.OperationHistory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Parts" EntityType="Self.Parts" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ServiceOrders" EntityType="Self.ServiceOrders" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SupplyOrders" EntityType="Self.SupplyOrders" Schema="dbo" store:Type="Tables" />
+        <EntityContainer Name="Хранилище GMWOGModelContainer">
+          <EntitySet Name="CartItems" EntityType="Self.CartItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderItems" EntityType="Self.OrderItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PickupPoints" EntityType="Self.PickupPoints" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Warehouse" EntityType="Self.Warehouse" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Operation__AutoS__6FE99F9F" Association="Self.FK__Operation__AutoS__6FE99F9F">
-            <End Role="AutoService" EntitySet="AutoService" />
-            <End Role="OperationHistory" EntitySet="OperationHistory" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__CartItems__Produ__17F790F9" Association="Self.FK__CartItems__Produ__17F790F9">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="CartItems" EntitySet="CartItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__Operation__Order__70DDC3D8" Association="Self.FK__Operation__Order__70DDC3D8">
-            <End Role="ServiceOrders" EntitySet="ServiceOrders" />
-            <End Role="OperationHistory" EntitySet="OperationHistory" />
+          <AssociationSet Name="FK__CartItems__UserI__17036CC0" Association="Self.FK__CartItems__UserI__17036CC0">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="CartItems" EntitySet="CartItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__Operation__Suppl__71D1E811" Association="Self.FK__Operation__Suppl__71D1E811">
-            <End Role="SupplyOrders" EntitySet="SupplyOrders" />
-            <End Role="OperationHistory" EntitySet="OperationHistory" />
+          <AssociationSet Name="FK__OrderItem__Order__236943A5" Association="Self.FK__OrderItem__Order__236943A5">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__ServiceOr__Clien__5FB337D6" Association="Self.FK__ServiceOr__Clien__5FB337D6">
-            <End Role="Clients" EntitySet="Clients" />
-            <End Role="ServiceOrders" EntitySet="ServiceOrders" />
+          <AssociationSet Name="FK__OrderItem__Produ__245D67DE" Association="Self.FK__OrderItem__Produ__245D67DE">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__ServiceOr__Requi__60A75C0F" Association="Self.FK__ServiceOr__Requi__60A75C0F">
-            <End Role="Parts" EntitySet="Parts" />
-            <End Role="ServiceOrders" EntitySet="ServiceOrders" />
+          <AssociationSet Name="FK__Orders__PickupPo__1DB06A4F" Association="Self.FK__Orders__PickupPo__1DB06A4F">
+            <End Role="PickupPoints" EntitySet="PickupPoints" />
+            <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
-          <AssociationSet Name="FK__ServiceOr__UsedP__619B8048" Association="Self.FK__ServiceOr__UsedP__619B8048">
-            <End Role="Parts" EntitySet="Parts" />
-            <End Role="ServiceOrders" EntitySet="ServiceOrders" />
+          <AssociationSet Name="FK__Orders__UserId__1CBC4616" Association="Self.FK__Orders__UserId__1CBC4616">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
-          <AssociationSet Name="FK__SupplyOrd__PartI__6754599E" Association="Self.FK__SupplyOrd__PartI__6754599E">
-            <End Role="Parts" EntitySet="Parts" />
-            <End Role="SupplyOrders" EntitySet="SupplyOrders" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Warehouse__PartI__5070F446" Association="Self.FK__Warehouse__PartI__5070F446">
-            <End Role="Parts" EntitySet="Parts" />
-            <End Role="Warehouse" EntitySet="Warehouse" />
+          <AssociationSet Name="FK__Products__Catego__10566F31" Association="Self.FK__Products__Catego__10566F31">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Products" EntitySet="Products" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="AutoServiceAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="AutoService">
+      <Schema Namespace="GMWOGModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CartItems">
           <Key>
-            <PropertyRef Name="AutoServiceID" />
+            <PropertyRef Name="CartItemId" />
           </Key>
-          <Property Name="AutoServiceID" Type="Int32" Nullable="false" />
-          <Property Name="Balance" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
-          <Property Name="ClientCounter" Type="Int32" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="OperationHistory" Relationship="Self.FK__Operation__AutoS__6FE99F9F" FromRole="AutoService" ToRole="OperationHistory" />
-        </EntityType>
-        <EntityType Name="Clients">
-          <Key>
-            <PropertyRef Name="ClientID" />
-          </Key>
-          <Property Name="ClientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CarModel" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="VisitDate" Type="DateTime" Precision="7" />
-          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="ServiceOrders" Relationship="Self.FK__ServiceOr__Clien__5FB337D6" FromRole="Clients" ToRole="ServiceOrders" />
-        </EntityType>
-        <EntityType Name="OperationHistory">
-          <Key>
-            <PropertyRef Name="HistoryID" />
-          </Key>
-          <Property Name="HistoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AutoServiceID" Type="Int32" Nullable="false" />
-          <Property Name="OrderID" Type="Int32" />
-          <Property Name="SupplyOrderID" Type="Int32" />
-          <Property Name="OperationType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Details" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="OperationDate" Type="DateTime" Precision="7" />
-          <Property Name="BalanceChange" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
-          <NavigationProperty Name="AutoService" Relationship="Self.FK__Operation__AutoS__6FE99F9F" FromRole="OperationHistory" ToRole="AutoService" />
-          <NavigationProperty Name="ServiceOrders" Relationship="Self.FK__Operation__Order__70DDC3D8" FromRole="OperationHistory" ToRole="ServiceOrders" />
-          <NavigationProperty Name="SupplyOrders" Relationship="Self.FK__Operation__Suppl__71D1E811" FromRole="OperationHistory" ToRole="SupplyOrders" />
-        </EntityType>
-        <EntityType Name="Parts">
-          <Key>
-            <PropertyRef Name="PartID" />
-          </Key>
-          <Property Name="PartID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="BasePrice" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="ServiceOrders" Relationship="Self.FK__ServiceOr__Requi__60A75C0F" FromRole="Parts" ToRole="ServiceOrders" />
-          <NavigationProperty Name="ServiceOrders1" Relationship="Self.FK__ServiceOr__UsedP__619B8048" FromRole="Parts" ToRole="ServiceOrders" />
-          <NavigationProperty Name="SupplyOrders" Relationship="Self.FK__SupplyOrd__PartI__6754599E" FromRole="Parts" ToRole="SupplyOrders" />
-          <NavigationProperty Name="Warehouse" Relationship="Self.FK__Warehouse__PartI__5070F446" FromRole="Parts" ToRole="Warehouse" />
-        </EntityType>
-        <EntityType Name="ServiceOrders">
-          <Key>
-            <PropertyRef Name="OrderID" />
-          </Key>
-          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientID" Type="Int32" Nullable="false" />
-          <Property Name="RequiredPartID" Type="Int32" Nullable="false" />
-          <Property Name="UsedPartID" Type="Int32" />
-          <Property Name="RepairCost" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="OrderDate" Type="DateTime" Precision="7" />
-          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Clients" Relationship="Self.FK__ServiceOr__Clien__5FB337D6" FromRole="ServiceOrders" ToRole="Clients" />
-          <NavigationProperty Name="OperationHistory" Relationship="Self.FK__Operation__Order__70DDC3D8" FromRole="ServiceOrders" ToRole="OperationHistory" />
-          <NavigationProperty Name="Parts" Relationship="Self.FK__ServiceOr__Requi__60A75C0F" FromRole="ServiceOrders" ToRole="Parts" />
-          <NavigationProperty Name="Parts1" Relationship="Self.FK__ServiceOr__UsedP__619B8048" FromRole="ServiceOrders" ToRole="Parts" />
-        </EntityType>
-        <EntityType Name="SupplyOrders">
-          <Key>
-            <PropertyRef Name="SupplyOrderID" />
-          </Key>
-          <Property Name="SupplyOrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PartID" Type="Int32" Nullable="false" />
+          <Property Name="CartItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="UnitCost" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="TotalCost" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
-          <Property Name="OrderDate" Type="DateTime" Precision="7" />
-          <Property Name="DeliveryProgress" Type="Int32" Nullable="false" />
+          <Property Name="AddedAt" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__CartItems__Produ__17F790F9" FromRole="CartItems" ToRole="Products" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__CartItems__UserI__17036CC0" FromRole="CartItems" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Products__Catego__10566F31" FromRole="Categories" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="OrderItems">
+          <Key>
+            <PropertyRef Name="OrderItemId" />
+          </Key>
+          <Property Name="OrderItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="UnitPrice" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__OrderItem__Order__236943A5" FromRole="OrderItems" ToRole="Orders" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__OrderItem__Produ__245D67DE" FromRole="OrderItems" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="PickupPointId" Type="Int32" Nullable="false" />
+          <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="OperationHistory" Relationship="Self.FK__Operation__Suppl__71D1E811" FromRole="SupplyOrders" ToRole="OperationHistory" />
-          <NavigationProperty Name="Parts" Relationship="Self.FK__SupplyOrd__PartI__6754599E" FromRole="SupplyOrders" ToRole="Parts" />
+          <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__Order__236943A5" FromRole="Orders" ToRole="OrderItems" />
+          <NavigationProperty Name="PickupPoints" Relationship="Self.FK__Orders__PickupPo__1DB06A4F" FromRole="Orders" ToRole="PickupPoints" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Orders__UserId__1CBC4616" FromRole="Orders" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="PickupPoints">
+          <Key>
+            <PropertyRef Name="PickupPointId" />
+          </Key>
+          <Property Name="PickupPointId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__PickupPo__1DB06A4F" FromRole="PickupPoints" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Stock" Type="Int32" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="CartItems" Relationship="Self.FK__CartItems__Produ__17F790F9" FromRole="Products" ToRole="CartItems" />
+          <NavigationProperty Name="Categories" Relationship="Self.FK__Products__Catego__10566F31" FromRole="Products" ToRole="Categories" />
+          <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__Produ__245D67DE" FromRole="Products" ToRole="OrderItems" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -326,152 +304,146 @@
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
-        <EntityType Name="Warehouse">
+        <EntityType Name="Users">
           <Key>
-            <PropertyRef Name="WarehouseID" />
+            <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="WarehouseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PartID" Type="Int32" Nullable="false" />
-          <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="LastRestockDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Parts" Relationship="Self.FK__Warehouse__PartI__5070F446" FromRole="Warehouse" ToRole="Parts" />
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordHash" Type="Binary" MaxLength="256" FixedLength="false" Nullable="false" />
+          <Property Name="PasswordSalt" Type="Binary" MaxLength="128" FixedLength="false" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="CartItems" Relationship="Self.FK__CartItems__UserI__17036CC0" FromRole="Users" ToRole="CartItems" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__UserId__1CBC4616" FromRole="Users" ToRole="Orders" />
         </EntityType>
-        <Association Name="FK__Operation__AutoS__6FE99F9F">
-          <End Role="AutoService" Type="Self.AutoService" Multiplicity="1" />
-          <End Role="OperationHistory" Type="Self.OperationHistory" Multiplicity="*" />
+        <Association Name="FK__CartItems__Produ__17F790F9">
+          <End Role="Products" Type="Self.Products" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CartItems" Type="Self.CartItems" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AutoService">
-              <PropertyRef Name="AutoServiceID" />
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
             </Principal>
-            <Dependent Role="OperationHistory">
-              <PropertyRef Name="AutoServiceID" />
+            <Dependent Role="CartItems">
+              <PropertyRef Name="ProductId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ServiceOr__Clien__5FB337D6">
-          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
-          <End Role="ServiceOrders" Type="Self.ServiceOrders" Multiplicity="*" />
+        <Association Name="FK__CartItems__UserI__17036CC0">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CartItems" Type="Self.CartItems" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Clients">
-              <PropertyRef Name="ClientID" />
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
             </Principal>
-            <Dependent Role="ServiceOrders">
-              <PropertyRef Name="ClientID" />
+            <Dependent Role="CartItems">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Operation__Order__70DDC3D8">
-          <End Role="ServiceOrders" Type="Self.ServiceOrders" Multiplicity="0..1" />
-          <End Role="OperationHistory" Type="Self.OperationHistory" Multiplicity="*" />
+        <Association Name="FK__Products__Catego__10566F31">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ServiceOrders">
-              <PropertyRef Name="OrderID" />
+            <Principal Role="Categories">
+              <PropertyRef Name="CategoryId" />
             </Principal>
-            <Dependent Role="OperationHistory">
-              <PropertyRef Name="OrderID" />
+            <Dependent Role="Products">
+              <PropertyRef Name="CategoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Operation__Suppl__71D1E811">
-          <End Role="SupplyOrders" Type="Self.SupplyOrders" Multiplicity="0..1" />
-          <End Role="OperationHistory" Type="Self.OperationHistory" Multiplicity="*" />
+        <Association Name="FK__OrderItem__Order__236943A5">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="SupplyOrders">
-              <PropertyRef Name="SupplyOrderID" />
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderId" />
             </Principal>
-            <Dependent Role="OperationHistory">
-              <PropertyRef Name="SupplyOrderID" />
+            <Dependent Role="OrderItems">
+              <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ServiceOr__Requi__60A75C0F">
-          <End Role="Parts" Type="Self.Parts" Multiplicity="1" />
-          <End Role="ServiceOrders" Type="Self.ServiceOrders" Multiplicity="*" />
+        <Association Name="FK__OrderItem__Produ__245D67DE">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="OrderItems" Type="Self.OrderItems" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Parts">
-              <PropertyRef Name="PartID" />
+            <Principal Role="Products">
+              <PropertyRef Name="ProductId" />
             </Principal>
-            <Dependent Role="ServiceOrders">
-              <PropertyRef Name="RequiredPartID" />
+            <Dependent Role="OrderItems">
+              <PropertyRef Name="ProductId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ServiceOr__UsedP__619B8048">
-          <End Role="Parts" Type="Self.Parts" Multiplicity="0..1" />
-          <End Role="ServiceOrders" Type="Self.ServiceOrders" Multiplicity="*" />
+        <Association Name="FK__Orders__PickupPo__1DB06A4F">
+          <End Role="PickupPoints" Type="Self.PickupPoints" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Parts">
-              <PropertyRef Name="PartID" />
+            <Principal Role="PickupPoints">
+              <PropertyRef Name="PickupPointId" />
             </Principal>
-            <Dependent Role="ServiceOrders">
-              <PropertyRef Name="UsedPartID" />
+            <Dependent Role="Orders">
+              <PropertyRef Name="PickupPointId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SupplyOrd__PartI__6754599E">
-          <End Role="Parts" Type="Self.Parts" Multiplicity="1" />
-          <End Role="SupplyOrders" Type="Self.SupplyOrders" Multiplicity="*" />
+        <Association Name="FK__Orders__UserId__1CBC4616">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Parts">
-              <PropertyRef Name="PartID" />
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
             </Principal>
-            <Dependent Role="SupplyOrders">
-              <PropertyRef Name="PartID" />
+            <Dependent Role="Orders">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Warehouse__PartI__5070F446">
-          <End Role="Parts" Type="Self.Parts" Multiplicity="1" />
-          <End Role="Warehouse" Type="Self.Warehouse" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Parts">
-              <PropertyRef Name="PartID" />
-            </Principal>
-            <Dependent Role="Warehouse">
-              <PropertyRef Name="PartID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="AutoServiceAEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="AutoService" EntityType="Self.AutoService" />
-          <EntitySet Name="Clients" EntityType="Self.Clients" />
-          <EntitySet Name="OperationHistory" EntityType="Self.OperationHistory" />
-          <EntitySet Name="Parts" EntityType="Self.Parts" />
-          <EntitySet Name="ServiceOrders" EntityType="Self.ServiceOrders" />
-          <EntitySet Name="SupplyOrders" EntityType="Self.SupplyOrders" />
+        <EntityContainer Name="GMWOGEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CartItems" EntityType="Self.CartItems" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" />
+          <EntitySet Name="OrderItems" EntityType="Self.OrderItems" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" />
+          <EntitySet Name="PickupPoints" EntityType="Self.PickupPoints" />
+          <EntitySet Name="Products" EntityType="Self.Products" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
-          <EntitySet Name="Warehouse" EntityType="Self.Warehouse" />
-          <AssociationSet Name="FK__Operation__AutoS__6FE99F9F" Association="Self.FK__Operation__AutoS__6FE99F9F">
-            <End Role="AutoService" EntitySet="AutoService" />
-            <End Role="OperationHistory" EntitySet="OperationHistory" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK__CartItems__Produ__17F790F9" Association="Self.FK__CartItems__Produ__17F790F9">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="CartItems" EntitySet="CartItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__ServiceOr__Clien__5FB337D6" Association="Self.FK__ServiceOr__Clien__5FB337D6">
-            <End Role="Clients" EntitySet="Clients" />
-            <End Role="ServiceOrders" EntitySet="ServiceOrders" />
+          <AssociationSet Name="FK__CartItems__UserI__17036CC0" Association="Self.FK__CartItems__UserI__17036CC0">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="CartItems" EntitySet="CartItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__Operation__Order__70DDC3D8" Association="Self.FK__Operation__Order__70DDC3D8">
-            <End Role="ServiceOrders" EntitySet="ServiceOrders" />
-            <End Role="OperationHistory" EntitySet="OperationHistory" />
+          <AssociationSet Name="FK__Products__Catego__10566F31" Association="Self.FK__Products__Catego__10566F31">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Products" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="FK__Operation__Suppl__71D1E811" Association="Self.FK__Operation__Suppl__71D1E811">
-            <End Role="SupplyOrders" EntitySet="SupplyOrders" />
-            <End Role="OperationHistory" EntitySet="OperationHistory" />
+          <AssociationSet Name="FK__OrderItem__Order__236943A5" Association="Self.FK__OrderItem__Order__236943A5">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__ServiceOr__Requi__60A75C0F" Association="Self.FK__ServiceOr__Requi__60A75C0F">
-            <End Role="Parts" EntitySet="Parts" />
-            <End Role="ServiceOrders" EntitySet="ServiceOrders" />
+          <AssociationSet Name="FK__OrderItem__Produ__245D67DE" Association="Self.FK__OrderItem__Produ__245D67DE">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__ServiceOr__UsedP__619B8048" Association="Self.FK__ServiceOr__UsedP__619B8048">
-            <End Role="Parts" EntitySet="Parts" />
-            <End Role="ServiceOrders" EntitySet="ServiceOrders" />
+          <AssociationSet Name="FK__Orders__PickupPo__1DB06A4F" Association="Self.FK__Orders__PickupPo__1DB06A4F">
+            <End Role="PickupPoints" EntitySet="PickupPoints" />
+            <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
-          <AssociationSet Name="FK__SupplyOrd__PartI__6754599E" Association="Self.FK__SupplyOrd__PartI__6754599E">
-            <End Role="Parts" EntitySet="Parts" />
-            <End Role="SupplyOrders" EntitySet="SupplyOrders" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Warehouse__PartI__5070F446" Association="Self.FK__Warehouse__PartI__5070F446">
-            <End Role="Parts" EntitySet="Parts" />
-            <End Role="Warehouse" EntitySet="Warehouse" />
+          <AssociationSet Name="FK__Orders__UserId__1CBC4616" Association="Self.FK__Orders__UserId__1CBC4616">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -479,82 +451,76 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище AutoServiceAModelContainer" CdmEntityContainer="AutoServiceAEntities">
-          <EntitySetMapping Name="AutoService">
-            <EntityTypeMapping TypeName="AutoServiceAModel.AutoService">
-              <MappingFragment StoreEntitySet="AutoService">
-                <ScalarProperty Name="AutoServiceID" ColumnName="AutoServiceID" />
-                <ScalarProperty Name="Balance" ColumnName="Balance" />
-                <ScalarProperty Name="ClientCounter" ColumnName="ClientCounter" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Clients">
-            <EntityTypeMapping TypeName="AutoServiceAModel.Clients">
-              <MappingFragment StoreEntitySet="Clients">
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CarModel" ColumnName="CarModel" />
-                <ScalarProperty Name="VisitDate" ColumnName="VisitDate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="OperationHistory">
-            <EntityTypeMapping TypeName="AutoServiceAModel.OperationHistory">
-              <MappingFragment StoreEntitySet="OperationHistory">
-                <ScalarProperty Name="HistoryID" ColumnName="HistoryID" />
-                <ScalarProperty Name="AutoServiceID" ColumnName="AutoServiceID" />
-                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-                <ScalarProperty Name="SupplyOrderID" ColumnName="SupplyOrderID" />
-                <ScalarProperty Name="OperationType" ColumnName="OperationType" />
-                <ScalarProperty Name="Details" ColumnName="Details" />
-                <ScalarProperty Name="OperationDate" ColumnName="OperationDate" />
-                <ScalarProperty Name="BalanceChange" ColumnName="BalanceChange" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Parts">
-            <EntityTypeMapping TypeName="AutoServiceAModel.Parts">
-              <MappingFragment StoreEntitySet="Parts">
-                <ScalarProperty Name="PartID" ColumnName="PartID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="BasePrice" ColumnName="BasePrice" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ServiceOrders">
-            <EntityTypeMapping TypeName="AutoServiceAModel.ServiceOrders">
-              <MappingFragment StoreEntitySet="ServiceOrders">
-                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="RequiredPartID" ColumnName="RequiredPartID" />
-                <ScalarProperty Name="UsedPartID" ColumnName="UsedPartID" />
-                <ScalarProperty Name="RepairCost" ColumnName="RepairCost" />
-                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SupplyOrders">
-            <EntityTypeMapping TypeName="AutoServiceAModel.SupplyOrders">
-              <MappingFragment StoreEntitySet="SupplyOrders">
-                <ScalarProperty Name="SupplyOrderID" ColumnName="SupplyOrderID" />
-                <ScalarProperty Name="PartID" ColumnName="PartID" />
+        <EntityContainerMapping StorageEntityContainer="Хранилище GMWOGModelContainer" CdmEntityContainer="GMWOGEntities">
+          <EntitySetMapping Name="CartItems">
+            <EntityTypeMapping TypeName="GMWOGModel.CartItems">
+              <MappingFragment StoreEntitySet="CartItems">
+                <ScalarProperty Name="CartItemId" ColumnName="CartItemId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="UnitCost" ColumnName="UnitCost" />
-                <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
-                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
-                <ScalarProperty Name="DeliveryProgress" ColumnName="DeliveryProgress" />
+                <ScalarProperty Name="AddedAt" ColumnName="AddedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="GMWOGModel.Categories">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderItems">
+            <EntityTypeMapping TypeName="GMWOGModel.OrderItems">
+              <MappingFragment StoreEntitySet="OrderItems">
+                <ScalarProperty Name="OrderItemId" ColumnName="OrderItemId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="GMWOGModel.Orders">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PickupPointId" ColumnName="PickupPointId" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PickupPoints">
+            <EntityTypeMapping TypeName="GMWOGModel.PickupPoints">
+              <MappingFragment StoreEntitySet="PickupPoints">
+                <ScalarProperty Name="PickupPointId" ColumnName="PickupPointId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="GMWOGModel.Products">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="AutoServiceAModel.sysdiagrams">
+            <EntityTypeMapping TypeName="GMWOGModel.sysdiagrams">
               <MappingFragment StoreEntitySet="sysdiagrams">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="principal_id" ColumnName="principal_id" />
@@ -564,13 +530,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Warehouse">
-            <EntityTypeMapping TypeName="AutoServiceAModel.Warehouse">
-              <MappingFragment StoreEntitySet="Warehouse">
-                <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
-                <ScalarProperty Name="PartID" ColumnName="PartID" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="LastRestockDate" ColumnName="LastRestockDate" />
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="GMWOGModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

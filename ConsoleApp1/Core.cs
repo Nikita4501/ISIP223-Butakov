@@ -8,6 +8,6 @@ namespace ConsoleApp1
 {
     internal class Core
     {
-        public static AutoServiceAEntities Context = new AutoServiceAEntities();
+        public static GMWOGEntities Context = new GMWOGEntities();
     }
 }

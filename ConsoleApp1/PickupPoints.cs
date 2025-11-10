@@ -12,25 +12,21 @@ namespace ConsoleApp1
     using System;
     using System.Collections.Generic;
     
-    public partial class SupplyOrders
+    public partial class PickupPoints
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SupplyOrders()
+        public PickupPoints()
         {
-            this.OperationHistory = new HashSet<OperationHistory>();
+            this.Orders = new HashSet<Orders>();
         }
     
-        public int SupplyOrderID { get; set; }
-        public int PartID { get; set; }
-        public int Quantity { get; set; }
-        public decimal UnitCost { get; set; }
-        public decimal TotalCost { get; set; }
-        public Nullable<System.DateTime> OrderDate { get; set; }
-        public int DeliveryProgress { get; set; }
-        public string Status { get; set; }
+        public int PickupPointId { get; set; }
+        public string Code { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string Phone { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OperationHistory> OperationHistory { get; set; }
-        public virtual Parts Parts { get; set; }
+        public virtual ICollection<Orders> Orders { get; set; }
     }
 }

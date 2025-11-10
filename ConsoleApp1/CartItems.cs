@@ -12,13 +12,15 @@ namespace ConsoleApp1
     using System;
     using System.Collections.Generic;
     
-    public partial class Warehouse
+    public partial class CartItems
     {
-        public int WarehouseID { get; set; }
-        public int PartID { get; set; }
+        public int CartItemId { get; set; }
+        public int UserId { get; set; }
+        public int ProductId { get; set; }
         public int Quantity { get; set; }
-        public Nullable<System.DateTime> LastRestockDate { get; set; }
+        public System.DateTime AddedAt { get; set; }
     
-        public virtual Parts Parts { get; set; }
+        public virtual Products Products { get; set; }
+        public virtual Users Users { get; set; }
     }
 }
