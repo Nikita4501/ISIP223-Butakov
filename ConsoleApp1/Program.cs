@@ -172,4 +172,206 @@ namespace ConsoleApp1
             }
         }
 
-        
+        static void ShowProducts()
+        {
+            Console.Clear();
+            Console.WriteLine("=== Список товаров ===");
+            var products = Core.Context.Products.ToList();
+            foreach (var p in products)
+            {
+                Console.WriteLine($"{p.ProductId}. {p.Name} — {p.Price}₽ (в наличии: {p.Stock})");
+            }
+        }
+
+        static void AddToCart(Users user)
+        {
+            ShowProducts();
+            Console.Write("Введите ID товара для добавления в корзину: ");
+            if (int.TryParse(Console.ReadLine(), out int productId))
+            {
+                var product = Core.Context.Products.FirstOrDefault(p => p.ProductId == productId);
+                if (product == null)
+                {
+                    Console.WriteLine("Товар не найден!");
+                }
+                else
+                {
+                    var existing = Core.Context.CartItems.FirstOrDefault(c => c.UserId == user.UserId && c.ProductId == productId);
+                    if (existing != null)
+                    {
+                        existing.Quantity++;
+                    }
+                    else
+                    {
+                        Core.Context.CartItems.Add(new CartItems
+                        {
+                            UserId = user.UserId,
+                            ProductId = productId,
+                            Quantity = 1,
+                            AddedAt = DateTime.Now
+                        });
+                    }
+                    Core.Context.SaveChanges();
+                    Console.WriteLine("Товар добавлен в корзину!");
+                }
+            }
+            else Console.WriteLine("Некорректный ввод!");
+            Pause();
+        }
+
+        static void ShowCart(Users user)
+        {
+            Console.Clear();
+            Console.WriteLine("=== Ваша корзина ===");
+            var cart = Core.Context.CartItems.Where(c => c.UserId == user.UserId).ToList();
+            if (!cart.Any())
+            {
+                Console.WriteLine("Корзина пуста!");
+                return;
+            }
+
+            foreach (var item in cart)
+            {
+                var product = Core.Context.Products.First(p => p.ProductId == item.ProductId);
+                Console.WriteLine($"{product.Name} — {product.Price}₽ × {item.Quantity}");
+            }
+        }
+
+        static void BuySingleItem(Users user)
+        {
+            ShowProducts();
+            Console.Write("Введите ID товара для покупки: ");
+            if (!int.TryParse(Console.ReadLine(), out int productId)) return;
+
+            var product = Core.Context.Products.FirstOrDefault(p => p.ProductId == productId);
+            if (product == null)
+            {
+                Console.WriteLine("Товар не найден!");
+                Pause();
+                return;
+            }
+
+            var pvz = ChoosePickupPoint();
+            if (pvz == null) return;
+
+            var order = new Orders
+            {
+                UserId = user.UserId,
+                PickupPointId = pvz.PickupPointId,
+                CreatedAt = DateTime.Now,
+                TotalAmount = product.Price,
+                Status = "Создан"
+            };
+            Core.Context.Orders.Add(order);
+            Core.Context.SaveChanges();
+
+            Core.Context.OrderItems.Add(new OrderItems
+            {
+                OrderId = order.OrderId,
+                ProductId = product.ProductId,
+                UnitPrice = product.Price,
+                Quantity = 1
+            });
+            Core.Context.SaveChanges();
+
+            Console.WriteLine($"Товар '{product.Name}' успешно куплен! Пункт выдачи: {pvz.Address}");
+            Pause();
+        }
+
+        static void BuyAllCart(Users user)
+        {
+            var cart = Core.Context.CartItems.Where(c => c.UserId == user.UserId).ToList();
+            if (!cart.Any())
+            {
+                Console.WriteLine("Корзина пуста!");
+                Pause();
+                return;
+            }
+
+            var pvz = ChoosePickupPoint();
+            if (pvz == null) return;
+
+            decimal total = 0;
+            foreach (var item in cart)
+            {
+                var product = Core.Context.Products.First(p => p.ProductId == item.ProductId);
+                total += product.Price * item.Quantity;
+            }
+
+            var order = new Orders
+            {
+                UserId = user.UserId,
+                PickupPointId = pvz.PickupPointId,
+                CreatedAt = DateTime.Now,
+                TotalAmount = total,
+                Status = "Создан"
+            };
+            Core.Context.Orders.Add(order);
+            Core.Context.SaveChanges();
+
+            foreach (var item in cart)
+            {
+                var product = Core.Context.Products.First(p => p.ProductId == item.ProductId);
+                Core.Context.OrderItems.Add(new OrderItems
+                {
+                    OrderId = order.OrderId,
+                    ProductId = product.ProductId,
+                    UnitPrice = product.Price,
+                    Quantity = item.Quantity
+                });
+            }
+            Core.Context.CartItems.RemoveRange(cart);
+            Core.Context.SaveChanges();
+
+            Console.WriteLine("Все товары из корзины куплены!");
+            Pause();
+        }
+
+        static void ShowOrders(Users user)
+        {
+            Console.Clear();
+            Console.WriteLine("=== Ваши заказы ===");
+            var orders = Core.Context.Orders
+                .Where(o => o.UserId == user.UserId)
+                .OrderByDescending(o => o.CreatedAt)
+                .ToList();
+
+            if (!orders.Any())
+            {
+                Console.WriteLine("У вас нет заказов!");
+                return;
+            }
+
+            foreach (var order in orders)
+            {
+                Console.WriteLine($"Заказ #{order.OrderId} — {order.TotalAmount}₽, статус: {order.Status}, дата: {order.CreatedAt}");
+            }
+        }
+
+        static PickupPoints ChoosePickupPoint()
+        {
+            Console.Clear();
+            Console.WriteLine("=== Выберите пункт выдачи ===");
+            var points = Core.Context.PickupPoints.ToList();
+            foreach (var p in points)
+            {
+                Console.WriteLine($"{p.PickupPointId}. {p.City}, {p.Address}");
+            }
+            Console.Write("Введите ID пункта выдачи: ");
+            if (int.TryParse(Console.ReadLine(), out int id))
+            {
+                var pvz = Core.Context.PickupPoints.FirstOrDefault(p => p.PickupPointId == id);
+                if (pvz != null) return pvz;
+            }
+            Console.WriteLine("Некорректный выбор!");
+            Pause();
+            return null;
+        }
+
+        static void Pause()
+        {
+            Console.WriteLine("\nНажмите любую клавишу, чтобы продолжить...");
+            Console.ReadKey();
+        }
+    }
+}
